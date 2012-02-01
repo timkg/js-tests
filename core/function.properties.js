@@ -1,12 +1,5 @@
 TestCase('Function properties', {
-   setUp: function() {
-       
-   },
-   
-   tearDown: function() {
-       
-   },
-   
+
    'test a function\s lenth property determines the number of expected arguments': function() {
        
        function example(value) {
