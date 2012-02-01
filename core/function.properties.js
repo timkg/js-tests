@@ -1,4 +1,4 @@
-TestCase('Function constructor', {
+TestCase('Function properties', {
    setUp: function() {
        
    },
