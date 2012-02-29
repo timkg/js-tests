@@ -347,6 +347,152 @@ TestCase('the function instance length property and arguments.length', {
 		
 		assert( person.sayName.call(otherPerson, 'My name is ', '.') === 'My name is bc.' );
 
+	},
+	
+	'test we can pass an anonymous function to another function as argument in order to get an identifier for the anonymous function': function() {
+		
+		var x = false;
+		
+		function Identify(f) {
+			f();
+			return true;
+		}
+		
+		Identify( function(){ x = true; } );
+		
+		assert( x === true );
+		
+	},
+	
+	'test we can call a named function expression immediately after it\s definition, without using parentesis': function() {
+		
+		var x = false;
+		
+		var sayHello = function () {
+			x = true;
+		}();
+		
+		assert( x === true );
+		
+	},
+	
+	'test we can call an anonymous function expression immediately after it\s definition, as long as we wrap it in parentesis': function() {
+		
+		var x = false;
+		
+		(function () {
+			x = true;
+		})();
+		
+		assert( x === true );
+		
+	},
+	
+	'test we can call an anonymous function expression immediately after it\s definition, when we prepend the negation operator, !': function() {
+		
+		var x = false;
+		
+		!function () {
+			x = true;
+			return true;
+		}();
+		
+		assert( x === true );
+		
+	},
+	
+	'test when self-invoking an anonymous function expression without wrapping parentesis, prepending it with the negation operator, we negate its return value': function() {
+		
+		var x = true;
+		
+		x = !function () {
+			return true;
+		}();
+		
+		assert( x === false );
+		
+	},
+	
+	'test we can call a function statement immediately after it\s definition, as long as we wrap it in parentesis': function() {
+		
+		var x = false;
+		
+		(function sayHello () {
+			x = true;
+		})();
+		
+		/* throws a syntax error:
+		function sayHello () {
+			x = true;
+		}();
+		*/
+		assert( x === true );
+		
+	},
+	
+	'test we can nest functions inside other functions': function() {
+		
+		function a() {
+			function b() {
+				function c() {
+					return true;
+				}
+				
+				return c();
+			}
+			
+			return b();
+		}
+		
+		assert( a() === true );
+		
+	},
+	
+	'test "this" inside of nested functions points to the global object': function() {
+		
+		var x = undefined;
+		
+		function a() {
+			function b() {
+				x = this;
+			}
+			b();
+		}
+		
+		a();
+		
+		assert( x === window );
+		
+	},
+	
+	'test we can invoke a function before it is defined, as long as it is a function statement': function() {
+		
+		var x = false;
+		
+		assert( typeof setX === 'function'  );
+		
+		setX();
+		
+		assert( x === true );
+		
+		function setX() {
+			x = true;
+		}
+		
+	},
+	
+	'test we can\t invoke a function before it is defined when it is a function expression': function() {
+		
+		assert( setX === undefined );
+		
+		var setX = function () {
+			x = true;
+		}
+		
 	}
+	
+	
+	
+	
 	
 });
